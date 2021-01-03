@@ -2,6 +2,7 @@ package com.ecom.orderservice.service;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -53,7 +54,7 @@ public class RestTemplateHelper {
 	}
 
 	@Async
-	public <T, E> Future<?> getForEntity(Class<T> clazz, Class<E> errorClazz, String url,
+	public <T, E> Future<?> getForEntity(Class<T> clazz, Class<E> errorClazz, Class<? extends Collection> collectionClazz, String url,
 			MultiValueMap<String, String> headers, Object... uriVariables) {
 		try {
 			ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET,
@@ -61,7 +62,12 @@ public class RestTemplateHelper {
 
 			JavaType javaType = null;
 			if (response.getStatusCode() == HttpStatus.OK || response.getStatusCode() == HttpStatus.CREATED) {
-				javaType = objectMapper.getTypeFactory().constructType(clazz);
+				if(collectionClazz !=null){
+					javaType = objectMapper.getTypeFactory().constructCollectionType(collectionClazz, clazz);
+				}
+				else{
+					javaType = objectMapper.getTypeFactory().constructType(clazz);
+				}
 			} else {
 				javaType = objectMapper.getTypeFactory().constructType(errorClazz);
 			}
@@ -140,7 +146,7 @@ public class RestTemplateHelper {
 		}
 	}
 
-	private <T> T readValue(ResponseEntity<String> response, JavaType javaType) {
+	public <T> T readValue(ResponseEntity<String> response, JavaType javaType) {
 		T result = null;
 		try {
 			result = objectMapper.readValue(response.getBody(), javaType);

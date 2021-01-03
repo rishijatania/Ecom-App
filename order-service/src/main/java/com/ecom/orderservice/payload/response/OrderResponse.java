@@ -13,14 +13,11 @@ public class OrderResponse {
 	private Long orderID;
 	
 	private UUID order_customer_id;
-	// private String order_item_name
-	// private String order_item_qty
+	
+	private List<ItemResponseApi> items;
 
 	private Double order_shipping_charges;
 
-	// order_payment_method
-	// order_payment_date
-	// order_payment_confirmation_number
     private Date orderedAt;
 
     private Date updatedAt;

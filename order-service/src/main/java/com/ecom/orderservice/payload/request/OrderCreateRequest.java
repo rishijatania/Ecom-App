@@ -15,18 +15,12 @@ public class OrderCreateRequest {
 	
 	@NotNull
 	private UUID order_customer_id;
-	// private String order_item_name
-	// private String order_item_qty
-
 
 	private String order_shipping_charges;
 
-	// order_payment_method
-	// order_payment_date
-	// order_payment_confirmation_number
-
-	// @NotEmpty
-	// @NotNull
+	@Valid
+	private List<ItemRequest> items;
+	
 	@Valid
 	private List<PaymentRequest> payments;
     // private Double order_subtotal;

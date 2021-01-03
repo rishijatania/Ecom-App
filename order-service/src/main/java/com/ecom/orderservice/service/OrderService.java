@@ -1,5 +1,6 @@
 package com.ecom.orderservice.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -9,15 +10,16 @@ import javax.transaction.Transactional;
 
 import com.ecom.orderservice.models.Address;
 import com.ecom.orderservice.models.AddressTypeEnum;
+import com.ecom.orderservice.models.Item;
 import com.ecom.orderservice.models.Order;
 import com.ecom.orderservice.models.OrderStatusEnum;
 import com.ecom.orderservice.models.Payment;
 import com.ecom.orderservice.payload.request.AddressRequest;
 import com.ecom.orderservice.payload.request.OrderCreateRequest;
+import com.ecom.orderservice.payload.response.ItemResponseApi;
 import com.ecom.orderservice.payload.response.PaymentResponseApi;
 import com.ecom.orderservice.repository.AddressRepository;
 import com.ecom.orderservice.repository.OrderRepository;
-import com.ecom.orderservice.repository.PaymentRepository;
 import com.ecom.orderservice.util.SequenceGenerator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,43 +33,46 @@ public class OrderService {
 	private OrderRepository orderRepository;
 
 	@Autowired
-	private PaymentRepository paymentRepository;
-
-	@Autowired
 	private AddressRepository addressRepository;
 
 	@Autowired
 	private PaymentService paymentService;
 
 	@Autowired
+	private ItemService itemService;
+
+	@Autowired
 	private SequenceGenerator squenceGenerator;
 
-	public Order saveOrder(OrderCreateRequest orderReq, List<PaymentResponseApi> transactions) {
+	public Order saveOrder(OrderCreateRequest orderReq, List<PaymentResponseApi> transactions,List<ItemResponseApi> inventoryItems) {
 
 		Address shipping_addr = getOrCreateAddressMapping(orderReq.getOrder_shipping_address(),
 				AddressTypeEnum.SHIPPING_ADDRESS);
 		Address billing_addr = getOrCreateAddressMapping(orderReq.getOrder_billing_address(),
 				AddressTypeEnum.BILLING_ADDRESS);
-		Set<Payment> pays = new HashSet<>();
-		transactions.forEach(tran -> {
-			Payment payment = paymentService.savePayment(tran);
-			pays.add(payment);
-		});
 
 		Order order = new Order();
 		order.setOrderID(squenceGenerator.nextId());
-		order.setOrder_subtotal(1.00);
 		order.setOrder_customer_id(orderReq.getOrder_customer_id());
 		order.setOrder_tax(orderReq.getOrder_tax());
 		order.setOrder_shipping_address(shipping_addr);
 		order.setOrder_billing_address(billing_addr);
 		order.setOrder_status(OrderStatusEnum.ORDER_ACCEPTED);
-		order.setPayments(pays);
 		order = orderRepository.save(order);
-		for (Payment payment : pays) {
-			payment.setOrder(order);
-			paymentRepository.save(payment);
+
+		Set<Payment> pays = new HashSet<>();
+		for(PaymentResponseApi tran:transactions) {
+			Payment payment = paymentService.savePayment(tran,order);
+			pays.add(payment);
 		}
+		order.setPayments(pays);
+
+		List<Item> items = new ArrayList<>();
+		for(ItemResponseApi itemRes:inventoryItems) {
+			Item item = itemService.saveItem(itemRes,order);
+			items.add(item);
+		}
+		order.setItems(items);
 
 		return order;
 	}

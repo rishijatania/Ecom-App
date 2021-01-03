@@ -4,6 +4,7 @@ import javax.transaction.Transactional;
 import javax.xml.bind.DatatypeConverter;
 
 import com.ecom.orderservice.models.CardDetail;
+import com.ecom.orderservice.models.Order;
 import com.ecom.orderservice.models.Payment;
 import com.ecom.orderservice.payload.request.PaymentRequest;
 import com.ecom.orderservice.payload.response.PaymentResponseApi;
@@ -27,7 +28,7 @@ public class PaymentService {
 	@Autowired
 	private PaymentRepository paymentRepository;
 
-	public Payment savePayment(PaymentResponseApi paymentsData) {
+	public Payment savePayment(PaymentResponseApi paymentsData,Order order) {
 
 		CardDetail cardDetail = saveCardDetail(paymentsData);
 		Payment payment = new Payment();
@@ -38,7 +39,7 @@ public class PaymentService {
 		payment.setPayment_method(paymentsData.getPayment_method_details().getType());
 		payment.setReceipt_url(paymentsData.getReceipt_url());
 		payment.setStatus(paymentsData.getStatus());
-
+		payment.setOrder(order);
 		payment.setCardDetail(cardDetail);
 
 		return paymentRepository.save(payment);

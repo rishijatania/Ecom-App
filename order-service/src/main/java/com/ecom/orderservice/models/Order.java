@@ -3,6 +3,7 @@ package com.ecom.orderservice.models;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -41,17 +42,14 @@ public class Order {
 	private Long orderID;
 	
 	private UUID order_customer_id;
-	// private String order_item_name
-	// private String order_item_qty
+
+	@OneToMany(mappedBy="order",cascade = CascadeType.ALL, orphanRemoval=true)
+    public List<Item> items;
 
 	private Double order_shipping_charges;
 
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval=true)
 	private Set<Payment> payments = new HashSet<>();
-
-	// order_payment_method
-	// order_payment_date
-	// order_payment_confirmation_number
 
 	@Column(name = "order_created_at", updatable = false)
 	@Temporal(TemporalType.DATE)
@@ -80,18 +78,18 @@ public class Order {
     @JoinColumn
     private Address order_billing_address;
 
-    // @ManyToMany (cascade = CascadeType.ALL)
-    // @JoinTable (name = "cart" , joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn (name = "item_id"))
-    // private List<Item> items;
-
-    // @ManyToOne (cascade = CascadeType.ALL)
-    // @JoinColumn (name = "user_id")
-    // private User user;
-	
 	@PreUpdate
 	@PrePersist
 	public void calcTotal() {
 		DecimalFormat df = new DecimalFormat("00.00");
-		this.total = Double.parseDouble(df.format((1 + (order_tax/100)) * order_subtotal));
+		if(this.items != null && !this.items.isEmpty() ){
+			this.order_subtotal =Double.parseDouble(df.format(this.items.stream().mapToDouble(item->item.getTotalCost()).sum()));
+			this.total = Double.parseDouble(df.format((1 + (this.order_tax/100)) * this.order_subtotal));
+		}
+		else {
+			this.order_subtotal = 0.0;
+			this.total = 0.0;
+		}
+		
 	}
 }
