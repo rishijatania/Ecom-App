@@ -78,72 +78,72 @@
 			"id": "1",
 			"skuId": "223e4587",
 			"itemName": "ITEMA",
-			"itemQuantity": "2",
-			"itemCost": "10.55",
+			"itemQuantity": 2,
+			"itemCost": 10.55,
 			"itemDescription": "This is sample item 1"
 		},
 		{
 			"id": "2",
 			"skuId": "223e4588",
 			"itemName": "ITEMB",
-			"itemQuantity": "5",
-			"itemCost": "100.23",
+			"itemQuantity": 5,
+			"itemCost": 100.23,
 			"itemDescription": "This is sample item 2"
 		},
 		{
 			"id": "3",
 			"skuId": "223e4589",
 			"itemName": "ITEMC",
-			"itemQuantity": "9",
-			"itemCost": "50.89",
+			"itemQuantity": 9,
+			"itemCost": 50.89,
 			"itemDescription": "This is sample item 3"
 		},
 		{
 			"id": "4",
 			"skuId": "223e4590",
 			"itemName": "ITEMD",
-			"itemQuantity": "10",
-			"itemCost": "25.32",
+			"itemQuantity": 10,
+			"itemCost": 25.32,
 			"itemDescription": "This is sample item 4"
 		},
 		{
 			"id": "5",
 			"skuId": "223e4591",
 			"itemName": "ITEME",
-			"itemQuantity": "15",
-			"itemCost": "34.95",
+			"itemQuantity": 15,
+			"itemCost": 34.95,
 			"itemDescription": "This is sample item 5"
 		},
 		{
 			"id": "6",
 			"skuId": "223e4592",
 			"itemName": "ITEMF",
-			"itemQuantity": "20",
-			"itemCost": "200.55",
+			"itemQuantity": 20,
+			"itemCost": 200.55,
 			"itemDescription": "This is sample item 6"
 		},
 		{
 			"id": "7",
 			"skuId": "223e4593",
 			"itemName": "ITEMG",
-			"itemQuantity": "30",
-			"itemCost": "2.10",
+			"itemQuantity": 30,
+			"itemCost": 2.10,
 			"itemDescription": "This is sample item 7"
 		},
 		{
 			"id": "8",
 			"skuId": "223e4594",
 			"itemName": "ITEMH",
-			"itemQuantity": "18",
-			"itemCost": "1.20",
+			"itemQuantity": 18,
+			"itemCost": 1.20,
 			"itemDescription": "This is sample item 8"
 		},
 		{
 			"id": "9",
 			"skuId": "223e4595",
 			"itemName": "ITEMI",
-			"itemQuantity": "2",
-			"itemCost": "100.20",
+			"itemQuantity": 2,
+			"itemCost": 100.20,
 			"itemDescription": "This is sample item 9"
 		}
   ]
