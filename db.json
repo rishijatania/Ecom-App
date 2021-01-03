@@ -1,0 +1,150 @@
+{
+	"shippingLabels": [
+		{
+			"id": "1",
+			"shippingId": "123e4567",
+			"customerId": "123e4568",
+			"orderId": "123e4569",
+			"responseStatus": "OK",
+			"methodType": "IN-STORE"
+		},
+		{
+			"id": "2",
+			"shippingId": "123e4577",
+			"customerId": "123e4578",
+			"orderId": "123e4579",
+			"responseStatus": "OK",
+			"methodType": "PICKUP"
+		},
+		{
+			"id": "3",
+			"shippingId": "123e4587",
+			"customerId": "123e4588",
+			"orderId": "123e4589",
+			"responseStatus": "OK",
+			"methodType": "ONLINE"
+		},
+		{
+			"id": "4",
+			"shippingId": "456e4567",
+			"customerId": "456e4568",
+			"orderId": "456e4569",
+			"responseStatus": "OK",
+			"methodType": "IN-STORE"
+		},
+		{
+			"id": "5",
+			"shippingId": "456e4577",
+			"customerId": "456e4578",
+			"orderId": "456e4579",
+			"responseStatus": "OK",
+			"methodType": "PICKUP"
+		},
+		{
+			"id": "6",
+			"shippingId": "456e4587",
+			"customerId": "456e4588",
+			"orderId": "456e4589",
+			"responseStatus": "OK",
+			"methodType": "ONLINE"
+		},
+		{
+			"id": "7",
+			"shippingId": "789e4567",
+			"customerId": "789e4568",
+			"orderId": "789e4569",
+			"responseStatus": "OK",
+			"methodType": "IN-STORE"
+		},
+		{
+			"id": "8",
+			"shippingId": "789e4577",
+			"customerId": "789e4578",
+			"orderId": "789e4579",
+			"responseStatus": "OK",
+			"methodType": "PICKUP"
+		},
+		{
+			"id": "9",
+			"shippingId": "789e4587",
+			"customerId": "789e4588",
+			"orderId": "789e4589",
+			"responseStatus": "OK",
+			"methodType": "ONLINE"
+		}
+  ],
+	"items": [
+		{
+			"id": "1",
+			"skuId": "223e4587",
+			"itemName": "ITEMA",
+			"itemQuantity": "2",
+			"itemCost": "10.55",
+			"itemDescription": "This is sample item 1"
+		},
+		{
+			"id": "2",
+			"skuId": "223e4588",
+			"itemName": "ITEMB",
+			"itemQuantity": "5",
+			"itemCost": "100.23",
+			"itemDescription": "This is sample item 2"
+		},
+		{
+			"id": "3",
+			"skuId": "223e4589",
+			"itemName": "ITEMC",
+			"itemQuantity": "9",
+			"itemCost": "50.89",
+			"itemDescription": "This is sample item 3"
+		},
+		{
+			"id": "4",
+			"skuId": "223e4590",
+			"itemName": "ITEMD",
+			"itemQuantity": "10",
+			"itemCost": "25.32",
+			"itemDescription": "This is sample item 4"
+		},
+		{
+			"id": "5",
+			"skuId": "223e4591",
+			"itemName": "ITEME",
+			"itemQuantity": "15",
+			"itemCost": "34.95",
+			"itemDescription": "This is sample item 5"
+		},
+		{
+			"id": "6",
+			"skuId": "223e4592",
+			"itemName": "ITEMF",
+			"itemQuantity": "20",
+			"itemCost": "200.55",
+			"itemDescription": "This is sample item 6"
+		},
+		{
+			"id": "7",
+			"skuId": "223e4593",
+			"itemName": "ITEMG",
+			"itemQuantity": "30",
+			"itemCost": "2.10",
+			"itemDescription": "This is sample item 7"
+		},
+		{
+			"id": "8",
+			"skuId": "223e4594",
+			"itemName": "ITEMH",
+			"itemQuantity": "18",
+			"itemCost": "1.20",
+			"itemDescription": "This is sample item 8"
+		},
+		{
+			"id": "9",
+			"skuId": "223e4595",
+			"itemName": "ITEMI",
+			"itemQuantity": "2",
+			"itemCost": "100.20",
+			"itemDescription": "This is sample item 9"
+		}
+  ]
+}
