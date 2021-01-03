@@ -2,8 +2,11 @@ package com.ecom.orderservice.models;
 
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -12,6 +15,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -41,6 +45,9 @@ public class Order {
 	// private String order_item_qty
 
 	private Double order_shipping_charges;
+
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval=true)
+	private Set<Payment> payments = new HashSet<>();
 
 	// order_payment_method
 	// order_payment_date

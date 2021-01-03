@@ -2,6 +2,7 @@ package com.ecom.orderservice.controllers;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -14,12 +15,14 @@ import javax.validation.Valid;
 
 import com.ecom.orderservice.models.Order;
 import com.ecom.orderservice.models.OrderStatusEnum;
-import com.ecom.orderservice.models.User;
 import com.ecom.orderservice.payload.request.OrderCreateRequest;
+import com.ecom.orderservice.payload.request.PaymentRequest;
 import com.ecom.orderservice.payload.response.ErrorMessageResponse;
 import com.ecom.orderservice.payload.response.OrderResponse;
 import com.ecom.orderservice.payload.response.OrdersListResponse;
+import com.ecom.orderservice.payload.response.PaymentResponseApi;
 import com.ecom.orderservice.service.OrderService;
+import com.ecom.orderservice.service.PaymentService;
 import com.ecom.orderservice.service.RestTemplateHelper;
 
 import org.modelmapper.ModelMapper;
@@ -46,9 +49,12 @@ import io.swagger.annotations.ApiResponses;
 @RequestMapping(value = "/api/v1/orders", produces = "application/json", consumes = { "application/json", "*/*" })
 public class OrdersController {
 	private final Logger LOG = LoggerFactory.getLogger(getClass());
-	
+
 	@Autowired
 	private OrderService orderService;
+
+	@Autowired
+	private PaymentService paymentService;
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -57,7 +63,7 @@ public class OrdersController {
 	private RestTemplateHelper restTemplateHelper;
 
 	@Value(value = "${http.timeout:5}")
-    private long timeout;
+	private long timeout;
 
 	@ApiOperation(httpMethod = "POST", value = "Create Order", response = OrderResponse.class, responseContainer = "")
 	@ApiResponses(value = { 
@@ -69,15 +75,24 @@ public class OrdersController {
 		// Get order id, check inventory, do payment, get customer, set transaction
 		// Call API
 		try{
+
 			LOG.debug("Starting calls");
-			Future<?> response = restTemplateHelper.getForEntity(User.class, ErrorMessageResponse.class,"https://jsonplaceholder.typicode.com/todos/{id}",Integer.valueOf(1));
-			System.out.println(response.get(timeout, TimeUnit.SECONDS));
-			
+			// Future<?> response = restTemplateHelper.getForEntity(User.class, ErrorMessageResponse.class,"https://jsonplaceholder.typicode.com/todos/{id}",null,Integer.valueOf(1));
+			// System.out.println(response.get(timeout, TimeUnit.SECONDS));
+			List<PaymentResponseApi> transactions =new ArrayList<>();
+			for(PaymentRequest payment:orderReq.getPayments()) {
+				Future<?> paymentResponse = restTemplateHelper.postForEntity(PaymentResponseApi.class, ErrorMessageResponse.class,"https://api.stripe.com/v1/charges",paymentService.getPaymentHeaders(),paymentService.generatePaymentsPayload(payment));
+				PaymentResponseApi trans = (PaymentResponseApi) paymentResponse.get(timeout, TimeUnit.SECONDS);
+				trans.setAmount(trans.getAmount()/100);
+				transactions.add(trans);
+			}
+
 			LOG.debug("End of calls.");
 			Order order = null;
 			try {
-				order = orderService.saveOrder(orderReq);
+				order = orderService.saveOrder(orderReq,transactions);
 			} catch (Exception e) {
+				LOG.debug(e.getStackTrace().toString());
 				return new ResponseEntity<>(
 						new ErrorMessageResponse(DateToString(), 500, "Order Create failed!", "Unable to Save Order", "/orders"),
 						HttpStatus.INTERNAL_SERVER_ERROR);

@@ -1,6 +1,7 @@
 package com.ecom.orderservice.payload.response;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import lombok.Getter;
@@ -35,4 +36,6 @@ public class OrderResponse {
     private AddressResponse order_shipping_address;
 
     private AddressResponse order_billing_address;
+
+	private List<PaymentResponse> payments;
 }

@@ -1,7 +1,9 @@
 package com.ecom.orderservice.payload.request;
 
+import java.util.List;
 import java.util.UUID;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
@@ -23,6 +25,10 @@ public class OrderCreateRequest {
 	// order_payment_date
 	// order_payment_confirmation_number
 
+	// @NotEmpty
+	// @NotNull
+	@Valid
+	private List<PaymentRequest> payments;
     // private Double order_subtotal;
 
 	@NotNull
