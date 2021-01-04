@@ -2,11 +2,9 @@ package com.ecom.orderservice.payload.response;
 
 import java.util.UUID;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class AddressResponse {
 	private UUID address_id;
 	private String addressline1;

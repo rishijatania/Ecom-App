@@ -2,11 +2,9 @@ package com.ecom.orderservice.payload.request;
 
 import javax.validation.constraints.Pattern;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class PaymentRequest {
 
 	@Pattern(regexp="^\\d+(\\.\\d{1,2})?$",message="Please round off the amount to 2 Decimal Places")

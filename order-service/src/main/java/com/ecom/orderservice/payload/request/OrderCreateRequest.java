@@ -6,11 +6,9 @@ import java.util.UUID;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class OrderCreateRequest {
 	
 	@NotNull
@@ -20,7 +18,7 @@ public class OrderCreateRequest {
 
 	@Valid
 	private List<ItemRequest> items;
-	
+
 	@Valid
 	private List<PaymentRequest> payments;
     // private Double order_subtotal;

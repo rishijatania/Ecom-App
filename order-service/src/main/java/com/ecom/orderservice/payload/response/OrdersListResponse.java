@@ -3,11 +3,9 @@ package com.ecom.orderservice.payload.response;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class OrdersListResponse {
 	private List<OrderResponse> orders = new ArrayList<>();
 }
