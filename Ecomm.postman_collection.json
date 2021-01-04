@@ -1,0 +1,198 @@
+{
+	"info": {
+		"_postman_id": "0ee764c3-e6d0-4d6d-80f5-d177cb6c535e",
+		"name": "Ecomm",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"order_customer_id\" : \"3bd628c5-52d8-4af2-bd74-b949532a236d\",\n    \"order_subtotal\":343,\n    \"order_tax\":6.52,\n    \"items\":[\n        {\n            \"itemName\":\"ITEMA\",\n            \"itemQuantity\":2\n        },\n        {\n            \"itemName\":\"ITEMB\",\n            \"itemQuantity\":5\n        }\n    ],\n    \"payments\":[\n        {\n            \"amount\":\"50\",\n\t        \"currency\":\"usd\",\n\t        \"stored_card_name\":\"tok_visa\"\n        },\n        {\n            \"amount\":\"50\",\n\t        \"currency\":\"usd\",\n\t        \"stored_card_name\":\"tok_mastercard\"\n        }\n    ],\n    \"order_shipping_address\":{\n        \"address_id\": \"f2ef2352-105a-4185-b927-c696279da4d9\",\n        \"addressline1\":\"1171 Boylston St\",\n        \"addressline2\":\"Apt 1\",\n        \"city\":\"Boston\",\n        \"state\":\"MA\",\n        \"zip\":\"02215\"\n    },\n    \"order_billing_address\":{\n        \"address_id\": \"0d981bce-1a09-4ef6-a600-8298d63afc10\",\n        \"addressline1\":\"1171 Boylston St\",\n        \"addressline2\":\"Apt 1\",\n        \"city\":\"Boston\",\n        \"state\":\"MA\",\n        \"zip\":\"02215\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Order - Decline",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"order_customer_id\" : \"3bd628c5-52d8-4af2-bd74-b949532a236d\",\n    \"order_subtotal\":343,\n    \"order_tax\":6.52,\n    \"items\":[\n        {\n            \"itemName\":\"ITEMA\",\n            \"itemQuantity\":2\n        },\n        {\n            \"itemName\":\"ITEMB\",\n            \"itemQuantity\":5\n        }\n    ],\n    \"payments\":[\n        {\n            \"amount\":\"50\",\n\t        \"currency\":\"usd\",\n\t        \"stored_card_name\":\"tok_visa\"\n        },\n        {\n            \"amount\":\"50\",\n\t        \"currency\":\"usd\",\n\t        \"stored_card_name\":\"tok_chargeDeclinedProcessingError\"\n        }\n    ],\n    \"order_shipping_address\":{\n        \"address_id\": \"f2ef2352-105a-4185-b927-c696279da4d9\",\n        \"addressline1\":\"1171 Boylston St\",\n        \"addressline2\":\"Apt 1\",\n        \"city\":\"Boston\",\n        \"state\":\"MA\",\n        \"zip\":\"02215\"\n    },\n    \"order_billing_address\":{\n        \"address_id\": \"0d981bce-1a09-4ef6-a600-8298d63afc10\",\n        \"addressline1\":\"1171 Boylston St\",\n        \"addressline2\":\"Apt 1\",\n        \"city\":\"Boston\",\n        \"state\":\"MA\",\n        \"zip\":\"02215\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Order - Partial Payment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"order_customer_id\" : \"3bd628c5-52d8-4af2-bd74-b949532a236d\",\n    \"order_subtotal\":343,\n    \"order_tax\":6.52,\n    \"items\":[\n        {\n            \"itemName\":\"ITEMA\",\n            \"itemQuantity\":2\n        },\n        {\n            \"itemName\":\"ITEMB\",\n            \"itemQuantity\":5\n        }\n    ],\n    \"payments\":[\n        {\n            \"amount\":\"50.424\",\n\t        \"currency\":\"usd\",\n\t        \"stored_card_name\":\"tok_visa\"\n        },\n        {\n            \"amount\":\"50\",\n\t        \"currency\":\"usd\",\n\t        \"stored_card_name\":\"tok_amex\"\n        }\n    ],\n    \"order_shipping_address\":{\n        \"address_id\": \"f2ef2352-105a-4185-b927-c696279da4d9\",\n        \"addressline1\":\"1171 Boylston St\",\n        \"addressline2\":\"Apt 1\",\n        \"city\":\"Boston\",\n        \"state\":\"MA\",\n        \"zip\":\"02215\"\n    },\n    \"order_billing_address\":{\n        \"address_id\": \"0d981bce-1a09-4ef6-a600-8298d63afc10\",\n        \"addressline1\":\"1171 Boylston St\",\n        \"addressline2\":\"Apt 1\",\n        \"city\":\"Boston\",\n        \"state\":\"MA\",\n        \"zip\":\"02215\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fetch All Orders",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fetch Order By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders/1491781877026816",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders",
+						"1491781877026816"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel Order By ID",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders/1491781877026816/cancellation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders",
+						"1491781877026816",
+						"cancellation"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "366cc177-c696-4da0-b239-647aa0154a42",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "c9aa9430-0fd7-40c4-b2eb-fb974c468a2c",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "0c832d0d-9caa-4809-86f7-fc38c3adc76a",
+			"key": "uuid",
+			"value": "8add109e-74a8-491b-b845-fb9d9256c07b"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
