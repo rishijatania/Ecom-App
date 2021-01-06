@@ -1,6 +1,7 @@
 package com.ecom.orderservice.models;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -13,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,9 +29,11 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table (name = "orders")
 @EntityListeners(AuditingEntityListener.class)
@@ -41,12 +45,12 @@ public class Order {
 	
 	private UUID order_customer_id;
 
-	@OneToMany(mappedBy="order",cascade = CascadeType.ALL, orphanRemoval=true)
-    public List<Item> items;
+	@OneToMany(mappedBy="order",fetch=FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
+    public List<Item> items= new ArrayList<>();
 
 	private Double order_shipping_charges;
 
-	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(mappedBy = "order", fetch=FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
 	private Set<Payment> payments = new HashSet<>();
 
 	@Column(name = "order_created_at", updatable = false)

@@ -33,7 +33,7 @@ public class Payment {
 	private boolean paid;
 	private String payment_method;
 
-	@OneToOne(optional = false,cascade = CascadeType.ALL)
+	@OneToOne(optional = false,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	private CardDetail CardDetail;
 
 	private String receipt_url;
