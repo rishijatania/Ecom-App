@@ -97,15 +97,6 @@ public class RestTemplateHelper {
 		return null;
 	}
 
-	// public <T, R> T postForEntity(Class<T> clazz, String url, R body, Object...
-	// uriVariables) {
-	// HttpEntity<R> request = new HttpEntity<>(body);
-	// ResponseEntity<String> response = restTemplate.postForEntity(url, request,
-	// String.class, uriVariables);
-	// JavaType javaType = objectMapper.getTypeFactory().constructType(clazz);
-	// return readValue(response, javaType);
-	// }
-
 	@Async
 	public <T, E> Future<?> postForEntity(Class<T> clazz, Class<E> errorClazz, String url,
 			MultiValueMap<String, String> headers, Object body, Object... uriVariables) {

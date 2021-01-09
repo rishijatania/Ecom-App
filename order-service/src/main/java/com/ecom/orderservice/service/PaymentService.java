@@ -12,7 +12,6 @@ import com.ecom.orderservice.models.Order;
 import com.ecom.orderservice.models.Payment;
 import com.ecom.orderservice.payload.request.OrderCreateRequest;
 import com.ecom.orderservice.payload.request.PaymentRequest;
-import com.ecom.orderservice.payload.response.ErrorMessageResponse;
 import com.ecom.orderservice.payload.response.PaymentResponseApi;
 import com.ecom.orderservice.repository.CardDetailRepository;
 import com.ecom.orderservice.repository.PaymentRepository;
@@ -97,7 +96,7 @@ public class PaymentService {
 		List<Future<?>> paymentFuture = new ArrayList<>();
 		for (PaymentRequest payment : orderReq.getPayments()) {
 			Future<?> paymentResponse = restTemplateHelper.postForEntity(PaymentResponseApi.class,
-					ErrorMessageResponse.class, paymentURI, getPaymentHeaders(), generatePaymentsPayload(payment));
+					List.class, paymentURI, getPaymentHeaders(), generatePaymentsPayload(payment));
 			paymentFuture.add(paymentResponse);
 		}
 		return paymentFuture;
