@@ -14,8 +14,6 @@ public class OrderResponse {
 
 	private List<ItemResponseApi> items;
 
-	private Double order_shipping_charges;
-
 	private Date orderedAt;
 
 	private Date updatedAt;

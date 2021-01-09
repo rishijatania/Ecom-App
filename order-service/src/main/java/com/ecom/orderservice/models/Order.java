@@ -48,8 +48,6 @@ public class Order {
 	@OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	public List<Item> items = new ArrayList<>();
 
-	private Double order_shipping_charges;
-
 	@OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Payment> payments = new HashSet<>();
 

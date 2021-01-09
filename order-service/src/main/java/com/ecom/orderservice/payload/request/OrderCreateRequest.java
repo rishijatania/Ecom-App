@@ -14,8 +14,6 @@ public class OrderCreateRequest {
 	@NotNull
 	private UUID order_customer_id;
 
-	private String order_shipping_charges;
-
 	@Valid
 	private List<ItemRequest> items;
 
