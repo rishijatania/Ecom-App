@@ -17,16 +17,14 @@ import com.ecom.orderservice.models.Order;
 import com.ecom.orderservice.models.OrderStatusEnum;
 import com.ecom.orderservice.payload.request.ItemRequest;
 import com.ecom.orderservice.payload.request.OrderCreateRequest;
-import com.ecom.orderservice.payload.request.PaymentRequest;
 import com.ecom.orderservice.payload.response.ErrorMessageResponse;
 import com.ecom.orderservice.payload.response.ItemResponseApi;
 import com.ecom.orderservice.payload.response.OrderResponse;
 import com.ecom.orderservice.payload.response.OrdersListResponse;
 import com.ecom.orderservice.payload.response.PaymentResponseApi;
+import com.ecom.orderservice.service.ItemService;
 import com.ecom.orderservice.service.OrderService;
 import com.ecom.orderservice.service.PaymentService;
-import com.ecom.orderservice.service.RestTemplateHelper;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -60,63 +58,51 @@ public class OrdersController {
 	private PaymentService paymentService;
 
 	@Autowired
+	private ItemService itemService;
+
+	@Autowired
 	private ModelMapper modelMapper;
 
-	@Autowired
-	private RestTemplateHelper restTemplateHelper;
-
-	@Autowired
-	private ObjectMapper objectMapper;
-
-	@Value(value = "${http.timeout:5}")
+	@Value(value = "${http.timeout:20}")
 	private long timeout;
 
 	@ApiOperation(httpMethod = "POST", value = "Create Order", response = OrderResponse.class, responseContainer = "")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 404, message = "Order Item Not Found!"),
+	@ApiResponses(value = { @ApiResponse(code = 404, message = "Order Item Not Found!"),
 			@ApiResponse(code = 400, message = "Order Bad Input Data!"),
 			@ApiResponse(code = 500, message = "Order Create failed!") })
 	@PostMapping("")
-	public <T,E> ResponseEntity<?> createOrder(@Valid @RequestBody OrderCreateRequest orderReq) {
+	public <T, E> ResponseEntity<?> createOrder(@Valid @RequestBody OrderCreateRequest orderReq) {
 		// Get order id, check inventory, do payment, get customer, set transaction
 		// Call API
-		try{
+		try {
 
 			LOG.debug("Starting calls");
-			List<Future<?>> itemFuture =new ArrayList<>();
-			for(ItemRequest item:orderReq.getItems()){
-				Future<?> itemResponse = restTemplateHelper.getForEntity(ItemResponseApi.class, ErrorMessageResponse.class,List.class, "https://my-json-server.typicode.com/rishijatania/Ecom-App/items?itemName={itemName}",null,item.getItemName());
-				itemFuture.add(itemResponse);
-			}
-
-			List<Future<?>> paymentFuture =new ArrayList<>();
-			for(PaymentRequest payment:orderReq.getPayments()) {
-				Future<?> paymentResponse = restTemplateHelper.postForEntity(PaymentResponseApi.class, ErrorMessageResponse.class,"https://api.stripe.com/v1/charges",paymentService.getPaymentHeaders(),paymentService.generatePaymentsPayload(payment));
-				paymentFuture.add(paymentResponse);
-			}
-			
+			List<Future<?>> itemFuture = itemService.initiateInventoryCheck(orderReq);
+			List<Future<?>> paymentFuture = paymentService.intiatePayment(orderReq);
 			LOG.debug("End of calls.");
 
-			List<PaymentResponseApi> transactions =new ArrayList<>();
-			for(Future<?> paymentResponse:paymentFuture){
+			List<PaymentResponseApi> transactions = new ArrayList<>();
+			for (Future<?> paymentResponse : paymentFuture) {
 				PaymentResponseApi trans = (PaymentResponseApi) paymentResponse.get(timeout, TimeUnit.SECONDS);
-				trans.setAmount(trans.getAmount()/100);
+				trans.setAmount(trans.getAmount() / 100);
 				transactions.add(trans);
 			}
 
-			List<ItemResponseApi> items =new ArrayList<>();
-			for(Future<?> itemResponse:itemFuture){
+			List<ItemResponseApi> items = new ArrayList<>();
+			for (Future<?> itemResponse : itemFuture) {
 				List<ItemResponseApi> itemsList = (List<ItemResponseApi>) itemResponse.get(timeout, TimeUnit.SECONDS);
 
-				if(itemsList == null || itemsList.isEmpty()){
-					return new ResponseEntity<>(
-							new ErrorMessageResponse(DateToString(), 404, "Order Create failed!", "Unable to find Item", "/orders"),
-							HttpStatus.INTERNAL_SERVER_ERROR);
+				if (itemsList == null || itemsList.isEmpty()) {
+					// Call Cancel Payment API
+					return new ResponseEntity<>(new ErrorMessageResponse(DateToString(), 404, "Order Create failed!",
+							"Unable to find Item", "/orders"), HttpStatus.INTERNAL_SERVER_ERROR);
 				}
-				Optional<ItemRequest> reqitem = orderReq.getItems().stream().filter(item-> item.getItemName().equals(itemsList.get(0).getItemName())).findFirst();
-				if(reqitem.get().getItemQuantity()> itemsList.get(0).getItemQuantity())	{
+				Optional<ItemRequest> reqitem = orderReq.getItems().stream()
+						.filter(item -> item.getItemName().equals(itemsList.get(0).getItemName())).findFirst();
+				if (reqitem.get().getItemQuantity() > itemsList.get(0).getItemQuantity()) {
 					return new ResponseEntity<>(
-							new ErrorMessageResponse(DateToString(), 400, "Order Create failed!", "Requested Item Quantity Unavailable", "/orders"),
+							new ErrorMessageResponse(DateToString(), 400, "Order Create failed!",
+									"Requested Item Quantity Unavailable", "/orders"),
 							HttpStatus.INTERNAL_SERVER_ERROR);
 				}
 				itemsList.get(0).setItemQuantity(reqitem.get().getItemQuantity());
@@ -125,28 +111,29 @@ public class OrdersController {
 
 			Order order = null;
 			try {
-				order = orderService.saveOrder(orderReq,transactions,items);
+				order = orderService.saveOrder(null, orderReq, transactions, items);
 			} catch (Exception e) {
 				LOG.debug(e.getStackTrace().toString());
-				return new ResponseEntity<>(
-						new ErrorMessageResponse(DateToString(), 500, "Order Create failed!", "Unable to Save Order", "/orders"),
-						HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<>(new ErrorMessageResponse(DateToString(), 500, "Order Create failed!",
+						"Unable to Save Order", "/orders"), HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			return ResponseEntity.ok(modelMapper.map(order, OrderResponse.class));
 		} catch (TimeoutException e) {
 			return new ResponseEntity<>(
-						new ErrorMessageResponse(DateToString(), 500, "Order Create failed!", "Unable to create order due to timeout from one of the services.", "/orders"),
-						HttpStatus.INTERNAL_SERVER_ERROR);
+					new ErrorMessageResponse(DateToString(), 500, "Order Create failed!",
+							"Unable to create order due to timeout from one of the services.", "/orders"),
+					HttpStatus.INTERNAL_SERVER_ERROR);
 		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
 			return new ResponseEntity<>(
-						new ErrorMessageResponse(DateToString(), 500, "Order Create failed!", "Unable to create order due to unspecified IO error.", "/orders"),
-						HttpStatus.INTERNAL_SERVER_ERROR);
+					new ErrorMessageResponse(DateToString(), 500, "Order Create failed!",
+							"Unable to create order due to unspecified IO error.", "/orders"),
+					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@ApiOperation(httpMethod = "GET", value = "Get All Orders", response = OrdersListResponse.class, responseContainer = "")
-	@ApiResponses(value = {
-			@ApiResponse(code = 500, message = "Orders Fetch All Failed") })
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Orders Fetch All Failed") })
 	@GetMapping("")
 	public ResponseEntity<?> fetchAllOrders() {
 		List<Order> orderList = null;

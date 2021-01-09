@@ -54,18 +54,18 @@ public class RestTemplateHelper {
 	}
 
 	@Async
-	public <T, E> Future<?> getForEntity(Class<T> clazz, Class<E> errorClazz, Class<? extends Collection> collectionClazz, String url,
-			MultiValueMap<String, String> headers, Object... uriVariables) {
+	public <T, E> Future<?> getForEntity(Class<T> clazz, Class<E> errorClazz,
+			Class<? extends Collection> collectionClazz, String url, MultiValueMap<String, String> headers,
+			Object... uriVariables) {
 		try {
 			ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET,
 					new HttpEntity<Object>(headers), String.class, uriVariables);
 
 			JavaType javaType = null;
 			if (response.getStatusCode() == HttpStatus.OK || response.getStatusCode() == HttpStatus.CREATED) {
-				if(collectionClazz !=null){
+				if (collectionClazz != null) {
 					javaType = objectMapper.getTypeFactory().constructCollectionType(collectionClazz, clazz);
-				}
-				else{
+				} else {
 					javaType = objectMapper.getTypeFactory().constructType(clazz);
 				}
 			} else {

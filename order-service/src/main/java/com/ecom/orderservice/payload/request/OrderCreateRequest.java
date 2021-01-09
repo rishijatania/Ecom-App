@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Data
 public class OrderCreateRequest {
-	
+
 	@NotNull
 	private UUID order_customer_id;
 
@@ -21,19 +21,15 @@ public class OrderCreateRequest {
 
 	@Valid
 	private List<PaymentRequest> payments;
-    // private Double order_subtotal;
 
 	@NotNull
-    private Double order_tax;
-
-    // private Double total;
+	private Double order_tax;
 
 	@NotNull
-    private AddressRequest order_shipping_address;
+	private AddressRequest order_shipping_address;
 
 	@NotNull
-    private AddressRequest order_billing_address;
+	private AddressRequest order_billing_address;
 
 	private String order_status;
 }
-

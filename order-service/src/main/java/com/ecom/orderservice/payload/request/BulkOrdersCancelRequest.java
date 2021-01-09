@@ -1,16 +1,18 @@
 package com.ecom.orderservice.payload.request;
 
+import java.util.List;
+
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
 @Data
-public class ItemRequest {
-	@NotNull
-	@NotEmpty
-	private String itemName;
+public class BulkOrdersCancelRequest {
 
 	@NotNull
-	private int itemQuantity;
+	@NotEmpty
+	@Valid
+	List<Long> orders;
 }

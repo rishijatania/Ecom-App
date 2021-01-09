@@ -22,15 +22,15 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table (name = "address")
+@Table(name = "address")
 @EntityListeners(AuditingEntityListener.class)
 public class Address {
 
 	@Id
-    @GeneratedValue
+	@GeneratedValue
 	@Column
-    private UUID address_id;
-	
+	private UUID address_id;
+
 	private String addressline1;
 
 	private String addressline2;
@@ -40,17 +40,17 @@ public class Address {
 	private String state;
 
 	private String zip;
-	
+
 	@Enumerated(EnumType.STRING)
 	private AddressTypeEnum type;
 
 	@CreatedDate
 	@Temporal(TemporalType.DATE)
-	@Column(name = "address_created_at",updatable = false)
-    private Date created_at;
+	@Column(name = "address_created_at", updatable = false)
+	private Date created_at;
 
 	@LastModifiedDate
 	@Temporal(TemporalType.DATE)
 	@Column(name = "address_updated_at")
-    private Date updated_at;
+	private Date updated_at;
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class PaymentResponseApi {
-	
+
 	private String id;
 	private long amount;
 	private long amount_captured;

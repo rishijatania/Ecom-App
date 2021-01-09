@@ -16,17 +16,18 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.Data;
+
 @Data
 @Entity
-@Table (name = "cardDetails")
+@Table(name = "cardDetails")
 @EntityListeners(AuditingEntityListener.class)
 public class CardDetail {
 
 	@Id
-    @GeneratedValue
+	@GeneratedValue
 	@Column
 	private long id;
-	
+
 	private String brand;
 	private String country;
 	private int exp_month;
@@ -35,14 +36,14 @@ public class CardDetail {
 	private String funding;
 	private String last4;
 	private String network;
-	
+
 	@CreatedDate
 	@Temporal(TemporalType.DATE)
-	@Column(name = "card_created_at",updatable = false)
-    private Date created_at;
+	@Column(name = "card_created_at", updatable = false)
+	private Date created_at;
 
 	@LastModifiedDate
 	@Temporal(TemporalType.DATE)
 	@Column(name = "card_updated_at")
-    private Date updated_at;
+	private Date updated_at;
 }

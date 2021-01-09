@@ -23,7 +23,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table (name = "payments")
+@Table(name = "payments")
 @EntityListeners(AuditingEntityListener.class)
 public class Payment {
 	@Id
@@ -33,7 +33,7 @@ public class Payment {
 	private boolean paid;
 	private String payment_method;
 
-	@OneToOne(optional = false,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private CardDetail CardDetail;
 
 	private String receipt_url;
@@ -41,12 +41,12 @@ public class Payment {
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinTable(name = "order_payments", joinColumns = { @JoinColumn(name = "payment_ID") }, inverseJoinColumns = {
-		@JoinColumn(name = "order_ID", referencedColumnName = "orderID") })
+			@JoinColumn(name = "order_ID", referencedColumnName = "orderID") })
 	private Order order;
-	
+
 	@CreatedDate
 	@Temporal(TemporalType.DATE)
-	@Column(name = "payment_date",updatable = false)
+	@Column(name = "payment_date", updatable = false)
 	private Date payment_date;
 
 }

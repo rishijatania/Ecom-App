@@ -35,63 +35,63 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table (name = "orders")
+@Table(name = "orders")
 @EntityListeners(AuditingEntityListener.class)
 public class Order {
 
 	@Id
 	@Column(unique = true)
 	private Long orderID;
-	
+
 	private UUID order_customer_id;
 
-	@OneToMany(mappedBy="order",fetch=FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
-    public List<Item> items= new ArrayList<>();
+	@OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	public List<Item> items = new ArrayList<>();
 
 	private Double order_shipping_charges;
 
-	@OneToMany(mappedBy = "order", fetch=FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Payment> payments = new HashSet<>();
 
 	@Column(name = "order_created_at", updatable = false)
 	@Temporal(TemporalType.DATE)
 	@CreatedDate
-    private Date orderedAt;
+	private Date orderedAt;
 
 	@Column(name = "order_updated_at")
 	@Temporal(TemporalType.DATE)
 	@LastModifiedDate
-    private Date updatedAt;
+	private Date updatedAt;
 
 	@Enumerated(EnumType.STRING)
-    private OrderStatusEnum order_status;
+	private OrderStatusEnum order_status;
 
-    private Double order_subtotal;
+	private Double order_subtotal;
 
-    private Double order_tax;
+	private Double order_tax;
 
-    private Double total;
-
-	@ManyToOne(optional = false)
-    @JoinColumn
-    private Address order_shipping_address;
+	private Double total;
 
 	@ManyToOne(optional = false)
-    @JoinColumn
-    private Address order_billing_address;
+	@JoinColumn
+	private Address order_shipping_address;
+
+	@ManyToOne(optional = false)
+	@JoinColumn
+	private Address order_billing_address;
 
 	@PreUpdate
 	@PrePersist
 	public void calcTotal() {
 		DecimalFormat df = new DecimalFormat("00.00");
-		if(this.items != null && !this.items.isEmpty() ){
-			this.order_subtotal =Double.parseDouble(df.format(this.items.stream().mapToDouble(item->item.getTotalCost()).sum()));
-			this.total = Double.parseDouble(df.format((1 + (this.order_tax/100)) * this.order_subtotal));
-		}
-		else {
+		if (this.items != null && !this.items.isEmpty()) {
+			this.order_subtotal = Double
+					.parseDouble(df.format(this.items.stream().mapToDouble(item -> item.getTotalCost()).sum()));
+			this.total = Double.parseDouble(df.format((1 + (this.order_tax / 100)) * this.order_subtotal));
+		} else {
 			this.order_subtotal = 0.0;
 			this.total = 0.0;
 		}
-		
+
 	}
 }
