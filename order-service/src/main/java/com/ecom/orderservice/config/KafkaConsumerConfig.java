@@ -12,6 +12,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +30,7 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 @EnableKafka
 @Configuration
 public class KafkaConsumerConfig {
+	private final Logger LOG = LoggerFactory.getLogger(getClass());
 
 	@Value(value = "${kafka.bootstrapAddress}")
 	private String bootstrapAddress;
@@ -46,6 +49,7 @@ public class KafkaConsumerConfig {
 
 	@Bean
 	public ConsumerFactory<String, OrderCreateRequest> consumerFactoryCreateOrder() {
+		LOG.info("Loading Kafka Consumer Config Properies for Service='{}'", "create-order");
 		Map<String, Object> props = new HashMap<>();
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
 		props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
@@ -56,6 +60,7 @@ public class KafkaConsumerConfig {
 		props.put(JsonDeserializer.TRUSTED_PACKAGES, "com.orderservice");
 		ErrorHandlingDeserializer<OrderCreateRequest> errorHandlingDeserializer = new ErrorHandlingDeserializer<>(
 				new JsonDeserializer<>(OrderCreateRequest.class, objectMapper()));
+		LOG.info("Kafka Consumer Config Properies Loaded Successfully for Service='{}'", "create-order");
 		return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), errorHandlingDeserializer);
 	}
 
@@ -67,11 +72,13 @@ public class KafkaConsumerConfig {
 		factory.setBatchListener(true);
 		factory.getContainerProperties();
 		factory.setBatchErrorHandler(new BatchLoggingErrorHandler());
+		LOG.info("Kafka Consumer Factory Bean Loaded Successfully for Service='{}'", "create-order");
 		return factory;
 	}
 
 	@Bean
 	public ConsumerFactory<String, List<Long>> consumerFactoryUpdateOrder() {
+		LOG.info("Loading Kafka Consumer Config Properies for Service='{}'", "update-order");
 		Map<String, Object> props = new HashMap<>();
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
 		props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
@@ -82,6 +89,7 @@ public class KafkaConsumerConfig {
 		props.put(JsonDeserializer.TRUSTED_PACKAGES, "com.orderservice");
 		ErrorHandlingDeserializer<List<Long>> errorHandlingDeserializer = new ErrorHandlingDeserializer<>(
 				new JsonDeserializer<>(List.class, objectMapper()));
+		LOG.info("Kafka Consumer Config Properies Loaded Successfully for Service='{}'", "update-order");
 		return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), errorHandlingDeserializer);
 	}
 
@@ -93,6 +101,7 @@ public class KafkaConsumerConfig {
 		factory.setBatchListener(true);
 		factory.getContainerProperties();
 		factory.setBatchErrorHandler(new BatchLoggingErrorHandler());
+		LOG.info("Kafka Consumer Factory Bean Loaded Successfully for Service='{}'", "update-order");
 		return factory;
 	}
 

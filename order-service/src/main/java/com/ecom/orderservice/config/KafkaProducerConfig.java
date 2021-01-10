@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +17,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 
 @Configuration
 public class KafkaProducerConfig {
+	private final Logger LOG = LoggerFactory.getLogger(getClass());
 
 	@Value(value = "${kafka.bootstrapAddress}")
 	private String bootstrapAddress;
@@ -25,6 +28,7 @@ public class KafkaProducerConfig {
 		configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
 		configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 		configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+		LOG.info("Kafka Producer Factory Bean Loaded Successfully");
 		return new DefaultKafkaProducerFactory<>(configProps);
 	}
 

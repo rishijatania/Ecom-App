@@ -1,12 +1,16 @@
 package com.ecom.orderservice.controllers;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import com.ecom.orderservice.payload.request.BulkOrdersCancelRequest;
 import com.ecom.orderservice.payload.request.BulkOrdersCreateRequest;
+import com.ecom.orderservice.payload.response.ErrorMessageResponse;
 import com.ecom.orderservice.payload.response.MessageResponse;
 import com.ecom.orderservice.service.KafkaService;
 import com.ecom.orderservice.util.SequenceGenerator;
@@ -52,7 +56,7 @@ public class BulkOrdersController {
 	@PostMapping("")
 	public <T, E> ResponseEntity<?> createBulkOrders(@Valid @RequestBody BulkOrdersCreateRequest ordersReq) {
 
-		LOG.debug("Starting calls");
+		LOG.info("Initiating Bulk Order Processing API={}", "/bulkOrders");
 		List<Long> orderIds = new ArrayList<>();
 		try {
 			ordersReq.getOrders().forEach(order -> {
@@ -61,9 +65,12 @@ public class BulkOrdersController {
 				kafkaService.sendMessage(orderCreateTopic, id.toString(), order);
 			});
 		} catch (Exception e) {
+			LOG.info("Bulk Order Processing Error API={}", "/bulkOrders");
 			LOG.debug(e.getStackTrace().toString());
+			return new ResponseEntity<>(new ErrorMessageResponse(DateToString(), 500, "Bulk Order Create failed!",
+					"Unable to Save Bulk Orders", "/orders"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-
+		LOG.info("Bulk Order Processing Successfull API={}", "/bulkOrders");
 		return ResponseEntity.ok(orderIds);
 	}
 
@@ -72,13 +79,24 @@ public class BulkOrdersController {
 	@PostMapping("/cancellation")
 	public <T, E> ResponseEntity<?> updateBulkOrders(@Valid @RequestBody BulkOrdersCancelRequest ordersReq) {
 
-		LOG.debug("Starting calls");
+		LOG.info("Initiating Bulk Order Processing API={}", "/bulkOrders/cancellation");
 		try {
-			kafkaService.sendMessage(orderCancelTopic, "/api/v1/bulkOrders/cancellation", ordersReq.getOrders());
+			kafkaService.sendMessage(orderCancelTopic, "/bulkOrders/cancellation", ordersReq.getOrders());
 		} catch (Exception e) {
+			LOG.info("Bulk Order Processing Error API={}", "bulkOrders/cancellation");
 			LOG.debug(e.getStackTrace().toString());
+			return new ResponseEntity<>(
+					new ErrorMessageResponse(DateToString(), 500, "Bulk Order Update failed!",
+							"Unable to Update Bulk Order Status", "/bulkOrders/cancellation"),
+					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-
+		LOG.info("Bulk Order Processing Successfull API={}", "/bulkOrders/cancellation");
 		return new ResponseEntity<>(new MessageResponse("Bulk Order Cancel request Accepted"), HttpStatus.ACCEPTED);
+	}
+
+	public String DateToString() {
+		Date date = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+		return dateFormat.format(date);
 	}
 }
