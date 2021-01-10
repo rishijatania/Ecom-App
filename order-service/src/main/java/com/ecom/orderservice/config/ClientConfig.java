@@ -13,11 +13,6 @@ public class ClientConfig {
 	@Value("${spring.nodeID:0}")
 	private int nodeID;
 
-	// @Bean
-	// public ErrorDecoder errorDecoder() {
-	// return new CustomErrorDecoder();
-	// }
-
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();

@@ -23,9 +23,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 @SpringBootTest
 class OrderServiceApplicationTests extends MVCRestTest {
 
-	// @Test
-	// void contextLoads() {
-	// }
 	public static final String BASE_URL = "/api/v1/orders";
 
 	private static Long orderId;
