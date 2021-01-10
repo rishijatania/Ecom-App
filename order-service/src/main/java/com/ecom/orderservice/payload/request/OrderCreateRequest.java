@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
@@ -21,6 +22,10 @@ public class OrderCreateRequest {
 	private List<PaymentRequest> payments;
 
 	@NotNull
+	@NotEmpty
+	private String delivery_method;
+
+	@NotNull
 	private Double order_tax;
 
 	@NotNull
@@ -29,5 +34,4 @@ public class OrderCreateRequest {
 	@NotNull
 	private AddressRequest order_billing_address;
 
-	private String order_status;
 }

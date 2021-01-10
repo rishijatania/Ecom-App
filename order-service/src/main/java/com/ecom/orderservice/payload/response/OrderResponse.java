@@ -26,6 +26,8 @@ public class OrderResponse {
 
 	private Double total;
 
+	private String delivery_method;
+
 	private AddressResponse order_shipping_address;
 
 	private AddressResponse order_billing_address;

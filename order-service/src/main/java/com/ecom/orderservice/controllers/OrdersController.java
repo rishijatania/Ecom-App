@@ -75,6 +75,10 @@ public class OrdersController {
 		// Get order id, check inventory, do payment, get customer, set transaction
 		// Call API
 		try {
+			if (!orderService.validateDeliveryMethod(orderReq.getDelivery_method())) {
+				return new ResponseEntity<>(new ErrorMessageResponse(DateToString(), 400, "Order Create failed!",
+						"Delivery Option Not Supported", "/orders"), HttpStatus.BAD_REQUEST);
+			}
 
 			LOG.debug("Starting calls");
 			List<Future<?>> itemFuture = itemService.initiateInventoryCheck(orderReq);

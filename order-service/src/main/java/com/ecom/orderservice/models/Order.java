@@ -70,6 +70,9 @@ public class Order {
 
 	private Double total;
 
+	@Enumerated(EnumType.STRING)
+	private DeliveryMethodEnum delivery_method;
+
 	@ManyToOne(optional = false)
 	@JoinColumn
 	private Address order_shipping_address;

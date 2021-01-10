@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 
 import com.ecom.orderservice.models.Address;
 import com.ecom.orderservice.models.AddressTypeEnum;
+import com.ecom.orderservice.models.DeliveryMethodEnum;
 import com.ecom.orderservice.models.Item;
 import com.ecom.orderservice.models.Order;
 import com.ecom.orderservice.models.OrderStatusEnum;
@@ -71,6 +72,7 @@ public class OrderService {
 		order.setOrder_shipping_address(shipping_addr);
 		order.setOrder_billing_address(billing_addr);
 		order.setOrder_status(OrderStatusEnum.ORDER_ACCEPTED);
+		order.setDelivery_method(fetchDeliveryMethod(orderReq.getDelivery_method()));
 		order = orderRepository.save(order);
 
 		Set<Payment> pays = new HashSet<>();
@@ -136,7 +138,6 @@ public class OrderService {
 				transactions.add(trans);
 			}
 
-			
 			List<ItemResponseApi> items = new ArrayList<>();
 			for (Future<?> itemResponse : itemFuture) {
 				List<ItemResponseApi> itemsList = (List<ItemResponseApi>) itemResponse.get(timeout, TimeUnit.SECONDS);
@@ -196,5 +197,23 @@ public class OrderService {
 			LOG.debug(e.getStackTrace().toString());
 			LOG.error("Order Create failed reason='{}' for OrderID={}", "Unable to Cancel Order", orderID);
 		}
+	}
+
+	public boolean validateDeliveryMethod(String delivery_method) {
+		for (DeliveryMethodEnum method : DeliveryMethodEnum.values()) {
+			if (method.name().equals(delivery_method)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public DeliveryMethodEnum fetchDeliveryMethod(String delivery_method) {
+		for (DeliveryMethodEnum method : DeliveryMethodEnum.values()) {
+			if (method.name().equals(delivery_method)) {
+				return method;
+			}
+		}
+		return null;
 	}
 }
