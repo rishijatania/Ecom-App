@@ -21,6 +21,7 @@ services:
       - KAFKA_TIME_INTERVAL_SLEEP=4000
       - SERVICE_PAYMENT_API_URL=https://api.stripe.com/v1/charges
       - SERVICE_INVENTORY_CHECK_API_URL=https://my-json-server.typicode.com/rishijatania/Ecom-App/items?itemName={itemName}
+      - LOGGING_LEVEL=INFO
     ports:
       - "8080:8080"
     depends_on:
