@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"order_customer_id\" : \"3bd628c5-52d8-4af2-bd74-b949532a236d\",\n    \"order_subtotal\":343,\n    \"order_tax\":6.52,\n    \"items\":[\n        {\n            \"itemName\":\"ITEMA\",\n            \"itemQuantity\":2\n        },\n        {\n            \"itemName\":\"ITEMB\",\n            \"itemQuantity\":5\n        }\n    ],\n    \"payments\":[\n        {\n            \"amount\":\"50\",\n\t        \"currency\":\"usd\",\n\t        \"stored_card_name\":\"tok_visa\"\n        },\n        {\n            \"amount\":\"50\",\n\t        \"currency\":\"usd\",\n\t        \"stored_card_name\":\"tok_mastercard\"\n        }\n    ],\n    \"order_shipping_address\":{\n        \"address_id\": \"f2ef2352-105a-4185-b927-c696279da4d9\",\n        \"addressline1\":\"1171 Boylston St\",\n        \"addressline2\":\"Apt 1\",\n        \"city\":\"Boston\",\n        \"state\":\"MA\",\n        \"zip\":\"02215\"\n    },\n    \"order_billing_address\":{\n        \"address_id\": \"0d981bce-1a09-4ef6-a600-8298d63afc10\",\n        \"addressline1\":\"1171 Boylston St\",\n        \"addressline2\":\"Apt 1\",\n        \"city\":\"Boston\",\n        \"state\":\"MA\",\n        \"zip\":\"02215\"\n    }\n}",
+					"raw": "{\n    \"order_customer_id\" : \"3bd628c5-52d8-4af2-bd74-b949532a236d\",\n    \"order_subtotal\":343,\n    \"order_tax\":6.52,\n    \"delivery_method\":\"DELIVERY\",\n    \"items\":[\n        {\n            \"itemName\":\"ITEMA\",\n            \"itemQuantity\":2\n        },\n        {\n            \"itemName\":\"ITEMB\",\n            \"itemQuantity\":5\n        }\n    ],\n    \"payments\":[\n        {\n            \"amount\":\"50\",\n\t        \"currency\":\"usd\",\n\t        \"stored_card_name\":\"tok_visa\"\n        },\n        {\n            \"amount\":\"50\",\n\t        \"currency\":\"usd\",\n\t        \"stored_card_name\":\"tok_mastercard\"\n        }\n    ],\n    \"order_shipping_address\":{\n        \"address_id\": \"f2ef2352-105a-4185-b927-c696279da4d9\",\n        \"addressline1\":\"1171 Boylston St\",\n        \"addressline2\":\"Apt 1\",\n        \"city\":\"Boston\",\n        \"state\":\"MA\",\n        \"zip\":\"02215\"\n    },\n    \"order_billing_address\":{\n        \"address_id\": \"0d981bce-1a09-4ef6-a600-8298d63afc10\",\n        \"addressline1\":\"1171 Boylston St\",\n        \"addressline2\":\"Apt 1\",\n        \"city\":\"Boston\",\n        \"state\":\"MA\",\n        \"zip\":\"02215\"\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -42,7 +42,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"orders\": [\n        {\n            \"order_customer_id\" : \"3bd628c5-52d8-4af2-bd74-b949532a236d\",\n            \"order_subtotal\":343,\n            \"order_tax\":6.52,\n            \"items\":[\n                {\n                    \"itemName\":\"ITEMA\",\n                    \"itemQuantity\":2\n                },\n                {\n                    \"itemName\":\"ITEMB\",\n                    \"itemQuantity\":5\n                }\n            ],\n            \"payments\":[\n                {\n                    \"amount\":\"50\",\n                    \"currency\":\"usd\",\n                    \"stored_card_name\":\"tok_visa\"\n                },\n                {\n                    \"amount\":\"50\",\n                    \"currency\":\"usd\",\n                    \"stored_card_name\":\"tok_mastercard\"\n                }\n            ],\n            \"order_shipping_address\":{\n                \"address_id\": \"f2ef2352-105a-4185-b927-c696279da4d9\",\n                \"addressline1\":\"1171 Boylston St\",\n                \"addressline2\":\"Apt 1\",\n                \"city\":\"Boston\",\n                \"state\":\"MA\",\n                \"zip\":\"02215\"\n            },\n            \"order_billing_address\":{\n                \"address_id\": \"0d981bce-1a09-4ef6-a600-8298d63afc10\",\n                \"addressline1\":\"1171 Boylston St\",\n                \"addressline2\":\"Apt 1\",\n                \"city\":\"Boston\",\n                \"state\":\"MA\",\n                \"zip\":\"02215\"\n            }\n        },\n        {\n            \"order_customer_id\" : \"3bd628c5-52d8-4af2-bd74-b949532a236d\",\n            \"order_subtotal\":343,\n            \"order_tax\":6.52,\n            \"items\":[\n                {\n                    \"itemName\":\"ITEMA\",\n                    \"itemQuantity\":2\n                },\n                {\n                    \"itemName\":\"ITEMC\",\n                    \"itemQuantity\":5\n                }\n            ],\n            \"payments\":[\n                {\n                    \"amount\":\"100\",\n                    \"currency\":\"usd\",\n                    \"stored_card_name\":\"tok_visa\"\n                },\n                {\n                    \"amount\":\"100\",\n                    \"currency\":\"usd\",\n                    \"stored_card_name\":\"tok_mastercard\"\n                }\n            ],\n            \"order_shipping_address\":{\n                \"address_id\": \"f2ef2352-105a-4185-b927-c696279da4d9\",\n                \"addressline1\":\"1167 Boylston St\",\n                \"addressline2\":\"Apt 10\",\n                \"city\":\"Boston\",\n                \"state\":\"MA\",\n                \"zip\":\"02215\"\n            },\n            \"order_billing_address\":{\n                \"address_id\": \"0d981bce-1a09-4ef6-a600-8298d63afc10\",\n                \"addressline1\":\"1167 Boylston St\",\n                \"addressline2\":\"Apt 10\",\n                \"city\":\"Boston\",\n                \"state\":\"MA\",\n                \"zip\":\"02215\"\n            }\n        }\n    ]\n}",
+					"raw": "{\n    \"orders\": [\n        {\n            \"order_customer_id\" : \"3bd628c5-52d8-4af2-bd74-b949532a236d\",\n            \"order_subtotal\":343,\n            \"order_tax\":6.52,\n            \"delivery_method\":\"IN_STORE\",\n            \"items\":[\n                {\n                    \"itemName\":\"ITEMA\",\n                    \"itemQuantity\":2\n                },\n                {\n                    \"itemName\":\"ITEMB\",\n                    \"itemQuantity\":5\n                }\n            ],\n            \"payments\":[\n                {\n                    \"amount\":\"50\",\n                    \"currency\":\"usd\",\n                    \"stored_card_name\":\"tok_visa\"\n                },\n                {\n                    \"amount\":\"50\",\n                    \"currency\":\"usd\",\n                    \"stored_card_name\":\"tok_mastercard\"\n                }\n            ],\n            \"order_shipping_address\":{\n                \"address_id\": \"f2ef2352-105a-4185-b927-c696279da4d9\",\n                \"addressline1\":\"1171 Boylston St\",\n                \"addressline2\":\"Apt 1\",\n                \"city\":\"Boston\",\n                \"state\":\"MA\",\n                \"zip\":\"02215\"\n            },\n            \"order_billing_address\":{\n                \"address_id\": \"0d981bce-1a09-4ef6-a600-8298d63afc10\",\n                \"addressline1\":\"1171 Boylston St\",\n                \"addressline2\":\"Apt 1\",\n                \"city\":\"Boston\",\n                \"state\":\"MA\",\n                \"zip\":\"02215\"\n            }\n        },\n        {\n            \"order_customer_id\" : \"3bd628c5-52d8-4af2-bd74-b949532a236d\",\n            \"order_subtotal\":343,\n            \"order_tax\":6.52,\n            \"delivery_method\":\"CURBSIDE_PICKUP\",\n            \"items\":[\n                {\n                    \"itemName\":\"ITEMA\",\n                    \"itemQuantity\":2\n                },\n                {\n                    \"itemName\":\"ITEMC\",\n                    \"itemQuantity\":5\n                }\n            ],\n            \"payments\":[\n                {\n                    \"amount\":\"100\",\n                    \"currency\":\"usd\",\n                    \"stored_card_name\":\"tok_visa\"\n                },\n                {\n                    \"amount\":\"100\",\n                    \"currency\":\"usd\",\n                    \"stored_card_name\":\"tok_mastercard\"\n                }\n            ],\n            \"order_shipping_address\":{\n                \"address_id\": \"f2ef2352-105a-4185-b927-c696279da4d9\",\n                \"addressline1\":\"1167 Boylston St\",\n                \"addressline2\":\"Apt 10\",\n                \"city\":\"Boston\",\n                \"state\":\"MA\",\n                \"zip\":\"02215\"\n            },\n            \"order_billing_address\":{\n                \"address_id\": \"0d981bce-1a09-4ef6-a600-8298d63afc10\",\n                \"addressline1\":\"1167 Boylston St\",\n                \"addressline2\":\"Apt 10\",\n                \"city\":\"Boston\",\n                \"state\":\"MA\",\n                \"zip\":\"02215\"\n            }\n        }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -72,7 +72,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"orders\": [\n        3668800012558336\n    ]\n}",
+					"raw": "{\n    \"orders\": [\n        4103225510731776\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -91,66 +91,6 @@
 						"v1",
 						"bulkOrders",
 						"cancellation"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Order - Decline",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"order_customer_id\" : \"3bd628c5-52d8-4af2-bd74-b949532a236d\",\n    \"order_subtotal\":343,\n    \"order_tax\":6.52,\n    \"items\":[\n        {\n            \"itemName\":\"ITEMA\",\n            \"itemQuantity\":2\n        },\n        {\n            \"itemName\":\"ITEMB\",\n            \"itemQuantity\":5\n        }\n    ],\n    \"payments\":[\n        {\n            \"amount\":\"50\",\n\t        \"currency\":\"usd\",\n\t        \"stored_card_name\":\"tok_visa\"\n        },\n        {\n            \"amount\":\"50\",\n\t        \"currency\":\"usd\",\n\t        \"stored_card_name\":\"tok_chargeDeclinedProcessingError\"\n        }\n    ],\n    \"order_shipping_address\":{\n        \"address_id\": \"f2ef2352-105a-4185-b927-c696279da4d9\",\n        \"addressline1\":\"1171 Boylston St\",\n        \"addressline2\":\"Apt 1\",\n        \"city\":\"Boston\",\n        \"state\":\"MA\",\n        \"zip\":\"02215\"\n    },\n    \"order_billing_address\":{\n        \"address_id\": \"0d981bce-1a09-4ef6-a600-8298d63afc10\",\n        \"addressline1\":\"1171 Boylston St\",\n        \"addressline2\":\"Apt 1\",\n        \"city\":\"Boston\",\n        \"state\":\"MA\",\n        \"zip\":\"02215\"\n    }\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/v1/orders",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"orders"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Order - Partial Payment",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"order_customer_id\" : \"3bd628c5-52d8-4af2-bd74-b949532a236d\",\n    \"order_subtotal\":343,\n    \"order_tax\":6.52,\n    \"items\":[\n        {\n            \"itemName\":\"ITEMA\",\n            \"itemQuantity\":2\n        },\n        {\n            \"itemName\":\"ITEMB\",\n            \"itemQuantity\":5\n        }\n    ],\n    \"payments\":[\n        {\n            \"amount\":\"50.424\",\n\t        \"currency\":\"usd\",\n\t        \"stored_card_name\":\"tok_visa\"\n        },\n        {\n            \"amount\":\"50\",\n\t        \"currency\":\"usd\",\n\t        \"stored_card_name\":\"tok_amex\"\n        }\n    ],\n    \"order_shipping_address\":{\n        \"address_id\": \"f2ef2352-105a-4185-b927-c696279da4d9\",\n        \"addressline1\":\"1171 Boylston St\",\n        \"addressline2\":\"Apt 1\",\n        \"city\":\"Boston\",\n        \"state\":\"MA\",\n        \"zip\":\"02215\"\n    },\n    \"order_billing_address\":{\n        \"address_id\": \"0d981bce-1a09-4ef6-a600-8298d63afc10\",\n        \"addressline1\":\"1171 Boylston St\",\n        \"addressline2\":\"Apt 1\",\n        \"city\":\"Boston\",\n        \"state\":\"MA\",\n        \"zip\":\"02215\"\n    }\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/v1/orders",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"orders"
 					]
 				}
 			},
@@ -230,7 +170,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/orders/3668945622016000/cancellation",
+					"raw": "http://localhost:8080/api/v1/orders/4103225594617856/cancellation",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -240,7 +180,7 @@
 						"api",
 						"v1",
 						"orders",
-						"3668945622016000",
+						"4103225594617856",
 						"cancellation"
 					]
 				}
