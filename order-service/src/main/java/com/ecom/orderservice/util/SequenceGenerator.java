@@ -5,16 +5,16 @@ import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.Enumeration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Distributed Sequence Generator. Inspired by Twitter snowflake:
  * https://github.com/twitter/snowflake/tree/snowflake-2010
- *
- * This class should be used as a Singleton. Make sure that you create and reuse
- * a Single instance of SequenceGenerator per node in your distributed system
- * cluster.
  */
 
 public class SequenceGenerator {
+	private final Logger LOG = LoggerFactory.getLogger(getClass());
 	private static final int UNUSED_BITS = 1; // Sign bit, Unused (always set to 0)
 	private static final int EPOCH_BITS = 41;
 	private static final int NODE_ID_BITS = 10;

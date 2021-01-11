@@ -16,6 +16,8 @@ import com.ecom.orderservice.payload.response.PaymentResponseApi;
 import com.ecom.orderservice.repository.CardDetailRepository;
 import com.ecom.orderservice.repository.PaymentRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +29,8 @@ import org.springframework.util.MultiValueMap;
 @Service
 @Transactional
 public class PaymentService {
+
+	private final Logger LOG = LoggerFactory.getLogger(getClass());
 
 	@Value("${service.payment.api.url}")
 	private String paymentURI;
@@ -41,7 +45,7 @@ public class PaymentService {
 	private RestTemplateHelper restTemplateHelper;
 
 	public Payment savePayment(PaymentResponseApi paymentsData, Order order) {
-
+		LOG.info("Initiating database operation for payment details");
 		CardDetail cardDetail = saveCardDetail(paymentsData);
 		Payment payment = new Payment();
 		payment.setId(paymentsData.getId());
@@ -92,13 +96,14 @@ public class PaymentService {
 	}
 
 	public List<Future<?>> intiatePayment(OrderCreateRequest orderReq) {
-
+		LOG.info("Initiating REST Request for Payments");
 		List<Future<?>> paymentFuture = new ArrayList<>();
 		for (PaymentRequest payment : orderReq.getPayments()) {
-			Future<?> paymentResponse = restTemplateHelper.postForEntity(PaymentResponseApi.class,
-					List.class, paymentURI, getPaymentHeaders(), generatePaymentsPayload(payment));
+			Future<?> paymentResponse = restTemplateHelper.postForEntity(PaymentResponseApi.class, List.class,
+					paymentURI, getPaymentHeaders(), generatePaymentsPayload(payment));
 			paymentFuture.add(paymentResponse);
 		}
+		LOG.info("REST Request for Payments Raised Successfully");
 		return paymentFuture;
 	}
 }

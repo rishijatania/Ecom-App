@@ -59,12 +59,13 @@ public class OrderService {
 
 	public Order saveOrder(Long orderID, OrderCreateRequest orderReq, List<PaymentResponseApi> transactions,
 			List<ItemResponseApi> inventoryItems) {
-
+		LOG.info("Initiating database operation for create order request");
 		Address shipping_addr = getOrCreateAddressMapping(orderReq.getOrder_shipping_address(),
 				AddressTypeEnum.SHIPPING_ADDRESS);
 		Address billing_addr = getOrCreateAddressMapping(orderReq.getOrder_billing_address(),
 				AddressTypeEnum.BILLING_ADDRESS);
 
+		LOG.info("Address Saved Successfully");
 		Order order = new Order();
 		order.setOrderID(orderID == null ? squenceGenerator.nextId() : orderID);
 		order.setOrder_customer_id(orderReq.getOrder_customer_id());
@@ -75,6 +76,8 @@ public class OrderService {
 		order.setDelivery_method(fetchDeliveryMethod(orderReq.getDelivery_method()));
 		order = orderRepository.save(order);
 
+		LOG.info("Order Saved Successfully");
+
 		Set<Payment> pays = new HashSet<>();
 		for (PaymentResponseApi tran : transactions) {
 			Payment payment = paymentService.savePayment(tran, order);
@@ -82,13 +85,14 @@ public class OrderService {
 		}
 		order.setPayments(pays);
 
+		LOG.info("Payments Saved Successfully");
 		List<Item> items = new ArrayList<>();
 		for (ItemResponseApi itemRes : inventoryItems) {
 			Item item = itemService.saveItem(itemRes, order);
 			items.add(item);
 		}
 		order.setItems(items);
-
+		LOG.info("Items Saved Successfully");
 		return order;
 	}
 
@@ -126,10 +130,10 @@ public class OrderService {
 
 	public void createBulkOrder(Long orderID, OrderCreateRequest orderReq) {
 		try {
-			LOG.debug("Starting calls");
+			LOG.info("Initiating Future REST calls");
 			List<Future<?>> itemFuture = itemService.initiateInventoryCheck(orderReq);
 			List<Future<?>> paymentFuture = paymentService.intiatePayment(orderReq);
-			LOG.debug("End of calls.");
+			LOG.info("End Future REST calls");
 
 			List<PaymentResponseApi> transactions = new ArrayList<>();
 			for (Future<?> paymentResponse : paymentFuture) {
@@ -163,8 +167,9 @@ public class OrderService {
 				saveOrder(orderID, orderReq, transactions, items);
 			} catch (Exception e) {
 				// Call a Cancel Payment API
-				LOG.debug(e.getStackTrace().toString());
 				LOG.error("Order Create failed reason='{}' for OrderID={}", "Unable to Save Order", orderID);
+				LOG.error("Error message={}", e.getMessage());
+				e.printStackTrace();
 				return;
 			}
 			LOG.info("Order Create successfull for OrderID={}", orderID);
@@ -172,11 +177,12 @@ public class OrderService {
 			// Call a Cancel Payment API
 			LOG.error("Order Create failed reason='{}' for OrderID={}",
 					"Unable to create order due to timeout from one of the services.", orderID);
+			LOG.error("Error message={}", e.getMessage());
 		} catch (InterruptedException | ExecutionException e) {
 			// Call a Cancel Payment API
-			e.printStackTrace();
 			LOG.error("Order Create failed reason='{}' for OrderID={}",
 					"Unable to create order due to unspecified IO error.", orderID);
+			LOG.error("Error message={}", e.getMessage());
 		}
 	}
 

@@ -13,12 +13,16 @@ import com.ecom.orderservice.payload.response.ErrorMessageResponse;
 import com.ecom.orderservice.payload.response.ItemResponseApi;
 import com.ecom.orderservice.repository.ItemRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ItemService {
+
+	private final Logger LOG = LoggerFactory.getLogger(getClass());
 
 	@Value("${service.inventory.api.inventoryCheck}")
 	private String inventoryServiceURI;
@@ -30,6 +34,7 @@ public class ItemService {
 	private RestTemplateHelper restTemplateHelper;
 
 	public Item saveItem(ItemResponseApi itemRes, Order order) {
+		LOG.info("Initiating Item Save Request");
 		Item item = new Item();
 		item.setItemID(new ItemID(order.getOrderID(), itemRes.getSkuId()));
 		item.setItemName(itemRes.getItemName());
@@ -41,12 +46,14 @@ public class ItemService {
 	}
 
 	public List<Future<?>> initiateInventoryCheck(OrderCreateRequest orderReq) {
+		LOG.info("Initiating REST Request Invenotory Check Item");
 		List<Future<?>> itemFuture = new ArrayList<>();
 		for (ItemRequest item : orderReq.getItems()) {
 			Future<?> itemResponse = restTemplateHelper.getForEntity(ItemResponseApi.class, ErrorMessageResponse.class,
 					List.class, inventoryServiceURI, null, item.getItemName());
 			itemFuture.add(itemResponse);
 		}
+		LOG.info("REST Request for Invenotory Check Item Raised Successfully");
 		return itemFuture;
 	}
 }

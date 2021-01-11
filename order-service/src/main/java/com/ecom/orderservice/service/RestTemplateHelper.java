@@ -1,25 +1,19 @@
 package com.ecom.orderservice.service;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.Future;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -41,16 +35,6 @@ public class RestTemplateHelper {
 	public RestTemplateHelper(RestTemplateBuilder restTemplateBuilder, ObjectMapper objectMapper) {
 		this.restTemplate = restTemplateBuilder.build();
 		this.objectMapper = objectMapper;
-	}
-
-	@Async
-	public <T> Future<List<T>> getDataList(URI url, ParameterizedTypeReference<List<T>> type)
-			throws InterruptedException, IOException {
-		RequestEntity<Void> request = RequestEntity.get(url).accept(MediaType.APPLICATION_JSON).build();
-		LOGGER.debug("Requesting: " + request.toString());
-		List<T> body = restTemplate.exchange(request, type).getBody();
-		LOGGER.debug("Received: " + body.toString());
-		return new AsyncResult<>(body);
 	}
 
 	@Async
@@ -80,21 +64,6 @@ public class RestTemplateHelper {
 			}
 			throw exception;
 		}
-	}
-
-	public <T> List<T> getForList(Class<T> clazz, String url, Object... uriVariables) {
-		try {
-			ResponseEntity<String> response = restTemplate.getForEntity(url, String.class, uriVariables);
-			CollectionType collectionType = objectMapper.getTypeFactory().constructCollectionType(List.class, clazz);
-			return readValue(response, collectionType);
-		} catch (HttpClientErrorException exception) {
-			if (exception.getStatusCode() == HttpStatus.NOT_FOUND) {
-				LOGGER.info("No data found {}", url);
-			} else {
-				LOGGER.info("rest client exception", exception.getMessage());
-			}
-		}
-		return null;
 	}
 
 	@Async
