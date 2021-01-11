@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.ecom.orderservice.models.DeliveryMethodEnum;
 import com.ecom.orderservice.models.OrderStatusEnum;
 import com.ecom.orderservice.payload.request.AddressRequest;
 import com.ecom.orderservice.payload.request.ItemRequest;
@@ -85,6 +86,7 @@ class OrderServiceApplicationTests extends MVCRestTest {
 		orderCreateRequest.setPayments(payments);
 		orderCreateRequest.setItems(items);
 		orderCreateRequest.setOrder_customer_id(UUID.randomUUID());
+		orderCreateRequest.setDelivery_method(DeliveryMethodEnum.DELIVERY.name());
 
 		String json = mapToJson(orderCreateRequest);
 
