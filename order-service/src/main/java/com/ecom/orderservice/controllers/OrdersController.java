@@ -76,14 +76,15 @@ public class OrdersController {
 		// Call API
 		try {
 			if (!orderService.validateDeliveryMethod(orderReq.getDelivery_method())) {
+				LOG.info("Data Validation Error={} for API={}", "Delivery Option Not Supported", "/Orders");
 				return new ResponseEntity<>(new ErrorMessageResponse(DateToString(), 400, "Order Create failed!",
 						"Delivery Option Not Supported", "/orders"), HttpStatus.BAD_REQUEST);
 			}
 
-			LOG.debug("Starting calls");
+			LOG.info("Initiating  Order Processing API={}", "/orders");
 			List<Future<?>> itemFuture = itemService.initiateInventoryCheck(orderReq);
 			List<Future<?>> paymentFuture = paymentService.intiatePayment(orderReq);
-			LOG.debug("End of calls.");
+			LOG.info("End Future REST calls");
 
 			List<PaymentResponseApi> transactions = new ArrayList<>();
 			for (Future<?> paymentResponse : paymentFuture) {
@@ -98,12 +99,14 @@ public class OrdersController {
 
 				if (itemsList == null || itemsList.isEmpty()) {
 					// Call Cancel Payment API
+					LOG.info("Inventory Check Error={} for API={}", "Unable to find Item", "/orders");
 					return new ResponseEntity<>(new ErrorMessageResponse(DateToString(), 404, "Order Create failed!",
 							"Unable to find Item", "/orders"), HttpStatus.INTERNAL_SERVER_ERROR);
 				}
 				Optional<ItemRequest> reqitem = orderReq.getItems().stream()
 						.filter(item -> item.getItemName().equals(itemsList.get(0).getItemName())).findFirst();
 				if (reqitem.get().getItemQuantity() > itemsList.get(0).getItemQuantity()) {
+					LOG.info("Inventory Check Error={} for API={}", "Requested Item Quantity Unavailable", "/orders");
 					return new ResponseEntity<>(
 							new ErrorMessageResponse(DateToString(), 400, "Order Create failed!",
 									"Requested Item Quantity Unavailable", "/orders"),
@@ -117,17 +120,21 @@ public class OrdersController {
 			try {
 				order = orderService.saveOrder(null, orderReq, transactions, items);
 			} catch (Exception e) {
-				LOG.debug(e.getStackTrace().toString());
+				LOG.error("Order Create failed with message={} for API={}", e.getMessage(), "/orders");
 				return new ResponseEntity<>(new ErrorMessageResponse(DateToString(), 500, "Order Create failed!",
 						"Unable to Save Order", "/orders"), HttpStatus.INTERNAL_SERVER_ERROR);
 			}
+			LOG.info("Order Create Successfull");
 			return ResponseEntity.ok(modelMapper.map(order, OrderResponse.class));
 		} catch (TimeoutException e) {
+			LOG.error("Order Processing Error API={}", "/orders");
+			e.printStackTrace();
 			return new ResponseEntity<>(
 					new ErrorMessageResponse(DateToString(), 500, "Order Create failed!",
 							"Unable to create order due to timeout from one of the services.", "/orders"),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		} catch (InterruptedException | ExecutionException e) {
+			LOG.error(" Order Processing Error API={}", "/orders");
 			e.printStackTrace();
 			return new ResponseEntity<>(
 					new ErrorMessageResponse(DateToString(), 500, "Order Create failed!",
@@ -140,6 +147,7 @@ public class OrdersController {
 	@ApiResponses(value = { @ApiResponse(code = 500, message = "Orders Fetch All Failed") })
 	@GetMapping("")
 	public ResponseEntity<?> fetchAllOrders() {
+		LOG.info("Initiating Order Processing API={}", "/orders");
 		List<Order> orderList = null;
 		OrdersListResponse orders = new OrdersListResponse();
 		try {
@@ -148,10 +156,13 @@ public class OrdersController {
 				orders.getOrders().add(modelMapper.map(order, OrderResponse.class));
 			});
 		} catch (Exception e) {
+			LOG.error(" Order Processing Error API={}", "/orders");
+			e.printStackTrace();
 			return new ResponseEntity<>(
 					new ErrorMessageResponse(DateToString(), 500, "", "Orders Fetch All Failed!", "/orders"),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		LOG.info("Orders Fetch Successfull");
 		return ResponseEntity.ok(orders);
 	}
 
@@ -160,6 +171,7 @@ public class OrdersController {
 			@ApiResponse(code = 500, message = "Order Fetch By ID Failed!") })
 	@GetMapping("/{orderID}")
 	public ResponseEntity<?> fetchOrderByID(@PathVariable Long orderID) {
+		LOG.info("Initiating Order Processing API={}", "/orders/{orderID}");
 		Optional<Order> order = null;
 		try {
 			order = orderService.getOrderByOrderId(orderID);
@@ -169,10 +181,13 @@ public class OrdersController {
 						HttpStatus.NOT_FOUND);
 			}
 		} catch (Exception e) {
+			LOG.error(" Order Processing Error API={}", "/orders/{orderID}");
+			e.printStackTrace();
 			return new ResponseEntity<>(
 					new ErrorMessageResponse(DateToString(), 500, "", "Order Fetch By ID Failed!", "/orders/{orderID}"),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		LOG.info("Order Fetch ID Successfull");
 		return ResponseEntity.ok(modelMapper.map(order.get(), OrderResponse.class));
 	}
 
@@ -182,24 +197,32 @@ public class OrdersController {
 			@ApiResponse(code = 500, message = "Order Fetch By ID Failed!") })
 	@PostMapping("/{orderID}/cancellation")
 	public ResponseEntity<?> cancelOrderByID(@PathVariable Long orderID) {
+		LOG.info("Initiating Order Processing API={}", "/orders/{orderID}/cancellation");
 		Optional<Order> order = null;
 		Order cancelledOrder = null;
 		try {
 			order = orderService.getOrderByOrderId(orderID);
 			if (!order.isPresent()) {
+				LOG.info(" Order Processing Error={} API={}", "Order cannot be updated once cancelled!",
+						"/orders/{orderID}/cancellation");
 				return new ResponseEntity<>(new ErrorMessageResponse(DateToString(), 404, "", "Order Not Found!",
 						"/orders/{orderID}/cancellation"), HttpStatus.NOT_FOUND);
 			}
 			if (OrderStatusEnum.ORDER_CANCELLED.equals(order.get().getOrder_status())) {
+				LOG.info(" Order Processing Error={} API={}", "Order cannot be updated once cancelled!",
+						"/orders/{orderID}/cancellation");
 				return new ResponseEntity<>(new ErrorMessageResponse(DateToString(), 422, "",
 						"Order cannot be updated once cancelled!", "/orders/{orderID}/cancellation"),
 						HttpStatus.UNPROCESSABLE_ENTITY);
 			}
 			cancelledOrder = orderService.cancelOrder(order.get());
 		} catch (Exception e) {
+			LOG.error(" Order Processing Error API={}", "/orders/{orderID}/cancellation");
+			e.printStackTrace();
 			return new ResponseEntity<>(new ErrorMessageResponse(DateToString(), 500, "", "Order Cancel By ID failed!",
 					"/orders/{orderID}/cancellation"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		LOG.info("Order Cancel Successfull");
 		return ResponseEntity.ok(modelMapper.map(cancelledOrder, OrderResponse.class));
 	}
 
