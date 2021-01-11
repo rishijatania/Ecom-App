@@ -84,7 +84,7 @@ public class RestTemplateHelper {
 			if (exception.getStatusCode() == HttpStatus.NOT_FOUND) {
 				LOGGER.info("No data found {}", url);
 			} else {
-				LOGGER.info("rest client exception", exception.getMessage());
+				LOGGER.info("rest client exception={}", exception.getMessage());
 			}
 			throw exception;
 		}
