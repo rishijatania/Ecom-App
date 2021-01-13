@@ -67,8 +67,9 @@ public class BulkOrdersController {
 		} catch (Exception e) {
 			LOG.info("Bulk Order Processing Error API={}", "/bulkOrders");
 			LOG.debug(e.getStackTrace().toString());
-			return new ResponseEntity<>(new ErrorMessageResponse(DateToString(), 500, "Bulk Order Create failed!",
-					"Unable to Save Bulk Orders", "/orders"), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(
+					new ErrorMessageResponse(500, "Bulk Order Create failed!", "Unable to Save Bulk Orders", "/orders"),
+					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		LOG.info("Bulk Order Processing Successfull API={}", "/bulkOrders");
 		return ResponseEntity.ok(orderIds);
@@ -85,18 +86,11 @@ public class BulkOrdersController {
 		} catch (Exception e) {
 			LOG.info("Bulk Order Processing Error API={}", "bulkOrders/cancellation");
 			LOG.debug(e.getStackTrace().toString());
-			return new ResponseEntity<>(
-					new ErrorMessageResponse(DateToString(), 500, "Bulk Order Update failed!",
-							"Unable to Update Bulk Order Status", "/bulkOrders/cancellation"),
+			return new ResponseEntity<>(new ErrorMessageResponse(500, "Bulk Order Update failed!",
+					"Unable to Update Bulk Order Status", "/bulkOrders/cancellation"),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		LOG.info("Bulk Order Processing Successfull API={}", "/bulkOrders/cancellation");
 		return new ResponseEntity<>(new MessageResponse("Bulk Order Cancel request Accepted"), HttpStatus.ACCEPTED);
-	}
-
-	public String DateToString() {
-		Date date = new Date();
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-		return dateFormat.format(date);
 	}
 }

@@ -1,4 +1,4 @@
-package com.ecom.orderservice.error.exceptions;
+package com.ecom.orderservice.error.handler;
 
 import java.lang.reflect.Method;
 

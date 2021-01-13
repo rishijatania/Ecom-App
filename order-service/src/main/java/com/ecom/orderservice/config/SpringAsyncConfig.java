@@ -2,7 +2,7 @@ package com.ecom.orderservice.config;
 
 import java.util.concurrent.Executor;
 
-import com.ecom.orderservice.error.exceptions.CustomAsyncExceptionHandler;
+import com.ecom.orderservice.error.handler.CustomAsyncExceptionHandler;
 
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
