@@ -4,5 +4,5 @@ EXPOSE 8080
 ARG JAR_FILE=target/order-service-0.0.1-SNAPSHOT.jar
 ADD ${JAR_FILE} app.jar
 COPY ./debug-entrypoint.sh .
-RUN ["chmod", "+x", "docker-entrypoint.sh"]
+RUN ["chmod", "+x", "./docker-entrypoint.sh"]
 ENTRYPOINT ["java","-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8080","-jar","/app.jar"]
