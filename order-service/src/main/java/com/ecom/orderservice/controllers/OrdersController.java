@@ -71,7 +71,7 @@ public class OrdersController {
 			@ApiResponse(code = 400, message = "Order Bad Input Data!"),
 			@ApiResponse(code = 500, message = "Order Create failed!") })
 	@PostMapping("")
-	public <T, E> ResponseEntity<?> createOrder(@Valid @RequestBody OrderCreateRequest orderReq) {
+	public ResponseEntity<?> createOrder(@Valid @RequestBody OrderCreateRequest orderReq) {
 		// Get order id, check inventory, do payment, get customer, set transaction
 		// Call API
 		try {

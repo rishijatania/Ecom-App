@@ -38,7 +38,7 @@ public class RestTemplateHelper {
 	}
 
 	@Async
-	public <T, E> Future<?> getForEntity(Class<T> clazz, Class<E> errorClazz,
+	public <T, U> Future<?> getForEntity(Class<T> clazz, Class<U> errorClazz,
 			Class<? extends Collection> collectionClazz, String url, MultiValueMap<String, String> headers,
 			Object... uriVariables) {
 		try {
@@ -67,7 +67,7 @@ public class RestTemplateHelper {
 	}
 
 	@Async
-	public <T, E> Future<?> postForEntity(Class<T> clazz, Class<E> errorClazz, String url,
+	public <T, U> Future<?> postForEntity(Class<T> clazz, Class<U> errorClazz, String url,
 			MultiValueMap<String, String> headers, Object body, Object... uriVariables) {
 		try {
 			ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST,

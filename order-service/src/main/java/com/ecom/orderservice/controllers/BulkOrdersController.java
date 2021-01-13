@@ -54,7 +54,7 @@ public class BulkOrdersController {
 			@ApiResponse(code = 400, message = "Order Bad Input Data!"),
 			@ApiResponse(code = 500, message = "Order Create failed!") })
 	@PostMapping("")
-	public <T, E> ResponseEntity<?> createBulkOrders(@Valid @RequestBody BulkOrdersCreateRequest ordersReq) {
+	public ResponseEntity<?> createBulkOrders(@Valid @RequestBody BulkOrdersCreateRequest ordersReq) {
 
 		LOG.info("Initiating Bulk Order Processing API={}", "/bulkOrders");
 		List<Long> orderIds = new ArrayList<>();
@@ -77,7 +77,7 @@ public class BulkOrdersController {
 	@ApiOperation(httpMethod = "POST", value = "Bulk Cancel Order", response = String.class, responseContainer = "")
 	@ApiResponses(value = { @ApiResponse(code = 202, message = "Bulk Order Cancel request Accepted") })
 	@PostMapping("/cancellation")
-	public <T, E> ResponseEntity<?> updateBulkOrders(@Valid @RequestBody BulkOrdersCancelRequest ordersReq) {
+	public ResponseEntity<?> updateBulkOrders(@Valid @RequestBody BulkOrdersCancelRequest ordersReq) {
 
 		LOG.info("Initiating Bulk Order Processing API={}", "/bulkOrders/cancellation");
 		try {
