@@ -31,9 +31,11 @@ public class OrderCreateRequest {
 	private Double order_tax;
 
 	@NotNull
+	@Valid
 	private AddressRequest order_shipping_address;
 
 	@NotNull
+	@Valid
 	private AddressRequest order_billing_address;
 
 }

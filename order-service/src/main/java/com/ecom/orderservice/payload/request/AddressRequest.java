@@ -33,8 +33,4 @@ public class AddressRequest {
 	@NotNull
 	@Pattern(regexp = "^[0-9]{5}(?:-[0-9]{4})?$", message = "Invalid zipcode!")
 	private String zip;
-
-	@NotBlank
-	@NotNull
-	private String type;
 }
