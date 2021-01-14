@@ -67,7 +67,7 @@ public class OrdersController {
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "Order Item Not Found!"),
 			@ApiResponse(code = 400, message = "Order Bad Input Data!"),
 			@ApiResponse(code = 500, message = "Order Create failed!") })
-	@PostMapping("")
+	@PostMapping
 	public ResponseEntity<?> createOrder(@Valid @RequestBody OrderCreateRequest orderReq) {
 		// Get order id, check inventory, do payment, get customer, set transaction
 		// Call API
@@ -142,7 +142,7 @@ public class OrdersController {
 
 	@ApiOperation(httpMethod = "GET", value = "Get All Orders", response = OrdersListResponse.class, responseContainer = "")
 	@ApiResponses(value = { @ApiResponse(code = 500, message = "Orders Fetch All Failed") })
-	@GetMapping("")
+	@GetMapping
 	public ResponseEntity<?> fetchAllOrders() {
 		LOG.info("Initiating Order Processing API={}", "/orders");
 		List<Order> orderList = null;

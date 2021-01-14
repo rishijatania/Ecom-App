@@ -53,7 +53,7 @@ public class BulkOrdersController {
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "Order Item Not Found!"),
 			@ApiResponse(code = 400, message = "Order Bad Input Data!"),
 			@ApiResponse(code = 500, message = "Order Create failed!") })
-	@PostMapping("")
+	@PostMapping
 	public ResponseEntity<?> createBulkOrders(@Valid @RequestBody BulkOrdersCreateRequest ordersReq) {
 
 		LOG.info("Initiating Bulk Order Processing API={}", "/bulkOrders");
