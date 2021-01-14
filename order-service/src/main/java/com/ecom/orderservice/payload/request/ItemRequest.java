@@ -1,5 +1,6 @@
 package com.ecom.orderservice.payload.request;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -11,6 +12,6 @@ public class ItemRequest {
 	@NotEmpty
 	private String itemName;
 
-	@NotNull
+	@Min(1)
 	private int itemQuantity;
 }

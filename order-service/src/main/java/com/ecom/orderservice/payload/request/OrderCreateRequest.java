@@ -16,9 +16,11 @@ public class OrderCreateRequest {
 	private UUID order_customer_id;
 
 	@Valid
+	@NotEmpty
 	private List<ItemRequest> items;
 
 	@Valid
+	@NotEmpty
 	private List<PaymentRequest> payments;
 
 	@NotNull
