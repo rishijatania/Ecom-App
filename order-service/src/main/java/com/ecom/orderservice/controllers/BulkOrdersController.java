@@ -1,9 +1,6 @@
 package com.ecom.orderservice.controllers;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -49,7 +46,7 @@ public class BulkOrdersController {
 	@Autowired
 	private SequenceGenerator squenceGenerator;
 
-	@ApiOperation(httpMethod = "POST", value = "Bulk Create Order", response = String.class, responseContainer = "")
+	@ApiOperation(httpMethod = "POST", value = "Bulk Create Order", response = Long.class, responseContainer = "List")
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "Order Item Not Found!"),
 			@ApiResponse(code = 400, message = "Order Bad Input Data!"),
 			@ApiResponse(code = 500, message = "Order Create failed!") })
@@ -75,7 +72,7 @@ public class BulkOrdersController {
 		return ResponseEntity.ok(orderIds);
 	}
 
-	@ApiOperation(httpMethod = "POST", value = "Bulk Cancel Order", response = String.class, responseContainer = "")
+	@ApiOperation(httpMethod = "POST", value = "Bulk Cancel Order", response = MessageResponse.class, responseContainer = "")
 	@ApiResponses(value = { @ApiResponse(code = 202, message = "Bulk Order Cancel request Accepted") })
 	@PostMapping("/cancellation")
 	public ResponseEntity<?> updateBulkOrders(@Valid @RequestBody BulkOrdersCancelRequest ordersReq) {
