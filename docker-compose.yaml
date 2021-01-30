@@ -69,8 +69,40 @@ services:
     depends_on:
       - kafka
 
+  grafana:
+    image: grafana/grafana:5.4.3
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+      - ./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards/dashboards
+      - grafana-data:/var/lib/grafana # persist data even if container shuts downvolumes:
+    env_file:
+      - ./order-service/.env
+    networks:
+      my-network:
+        aliases:
+          - grafana
+
+  prometheus:
+    image: prom/prometheus:v2.21.0
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    networks:
+      my-network:
+        aliases:  
+          - prometheus
+
 volumes:
   postgres-data: # named volumes can be managed easier using docker-compose
+    driver: local
+  grafana-data: # named volumes can be managed easier using docker-compose
+    driver: local
+  prometheus-data: # named volumes can be managed easier using docker-compose
     driver: local
 
 networks:
