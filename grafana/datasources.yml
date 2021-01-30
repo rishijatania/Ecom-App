@@ -5,4 +5,4 @@ datasources:
     type: prometheus
     access: proxy
     editable: true
-    url: http://prometheus:9090
+    url: http://prometheus:9090/
